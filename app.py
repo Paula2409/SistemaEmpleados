@@ -1,11 +1,13 @@
 # Importamos modulos para el proyecto
 # Resquest lo importamos por que toda la informacion que se va a procesar a traves del HTML va a ser un ENVIO de informacion. Este envio se maneja como 'request'(solicitud de informacion).
 # Redirect: nos permite redireccionar a la url desde donde vino
+# os: modulo del sistema operativo.
 
 from flask import Flask, render_template, request, redirect, url_for
 from flaskext.mysql import MySQL
 from datetime import datetime
 from pymysql.cursors import DictCursor
+import os
 
 app = Flask(__name__)
 
@@ -21,6 +23,8 @@ mysql.init_app(app)
 conn = mysql.connect()
 cursor = conn.cursor(cursor = DictCursor) # Modificamos el cursor para tomar los datos como diccionario
 
+CARPETA = os.path.join('uploads')
+app.config['CARPETA'] = CARPETA
 @app.route('/')
 def index():
     sql = "SELECT * FROM `sistema`.`empleados`;" # Consulta a la base de datos de la tabla empleados
@@ -66,7 +70,49 @@ def storage():
     
     return render_template('/empleados/index.html')
 
+@app.route('/edit/<int:id>')
+def edit(id):
+    sql = "SELECT * FROM `sistema`.`empleados` WHERE id = %s" # Consulta a la base de datos de la tabla empleados
 
+    cursor.execute(sql,id)
+    
+    ed_empleado = cursor.fetchall() # Trae todos los datos
+    conn.commit()
+    return render_template('/empleados/edit.html', empleados = ed_empleado)
+
+@app.route('/update', methods = ['POST'])
+def update():
+
+    _nombre = request.form['nombre'] 
+    _correo = request.form['correo']
+    _foto = request.files['foto']
+    id=request.form['id']
+        
+    sql = "UPDATE `sistema`.`empleados` SET `nombre`=%s,`correo`=%s WHERE id=%s;"
+    
+    datos = (_nombre,_correo,id)
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    now = datetime.now()
+    tiempo = now.strftime("%Y%H%M%S")
+    
+    if _foto.filename != '':
+        nueva_foto = tiempo+_foto.filename
+        _foto.save("uploads/"+nueva_foto)
+    
+        cursor.execute("SELECT foto FROM `sistema`.`empleados` WHERE id = %s",id) # Recuperamos la foto y actulizamos ese campo.
+        fila =cursor.fetchall()
+
+        os.remove(os.path.join(app.config['CARPETA'], fila[0][0])) # Con el metodo remove, eliminamos en la ubicacion donde se encuentra la foto almacenada, dicho archivo.
+        
+        cursor.execute("UPDATE `sistema`.`empleados` SET foto=%s WHERE id=%s",(nueva_foto,id)) # Seteamos el nuevo archivo de foto en la base de datos.
+        conn.commit()
+        
+    cursor.execute(sql,datos)
+    conn.commit()
+    
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
