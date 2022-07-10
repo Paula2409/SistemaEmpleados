@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Hola Flask</title>
+    <title>Inicio - Sistema de Empleados</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,7 +27,7 @@
             <td>{{empleado.foto}}</td>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.correo}}</td>
-            <td>Editar / <a href="/destroy/{{empleado.id}}">Borrar</a></td>
+            <td><a href="/edit/{{empleado.id}}">Editar </a><a href="/destroy/{{empleado.id}}">Borrar</a></td>
           </tr>
           {% endfor %}
         </tbody>
