@@ -2,8 +2,10 @@
 # Resquest lo importamos por que toda la informacion que se va a procesar a traves del HTML va a ser un ENVIO de informacion. Este envio se maneja como 'request'(solicitud de informacion).
 # Redirect: nos permite redireccionar a la url desde donde vino
 # os: modulo del sistema operativo.
+# Send from directory: modulo para que podamos acceder a las carpetas de flask (fotos)
+# url_for: se necesita para acceder a un metodo que tenemos en la aplcacion.py. En este caso el metodo uploads.
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flaskext.mysql import MySQL
 from datetime import datetime
 from pymysql.cursors import DictCursor
@@ -25,6 +27,11 @@ cursor = conn.cursor(cursor = DictCursor) # Modificamos el cursor para tomar los
 
 CARPETA = os.path.join('uploads')
 app.config['CARPETA'] = CARPETA
+
+@app.route('/uploads/<foto_empleado>')
+def uploads(foto_empleado):
+    return send_from_directory(app.config['CARPETA'], foto_empleado) # El metodo uploads nos dirige a la carpeta (CARPETA) y nos muestra la foto guardada en la variable nombre Foto
+
 @app.route('/')
 def index():
     sql = "SELECT * FROM `sistema`.`empleados`;" # Consulta a la base de datos de la tabla empleados
@@ -68,7 +75,7 @@ def storage():
     cursor.execute(sql,datos)
     conn.commit()
     
-    return render_template('/empleados/index.html')
+    return redirect('/')
 
 @app.route('/edit/<int:id>')
 def edit(id):
