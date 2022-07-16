@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, flash
 from flaskext.mysql import MySQL
 from datetime import datetime
 from pymysql.cursors import DictCursor
 import os
 
 app = Flask(__name__)
+app.secret_key="ClaveSecreta"
 
 # Configuracion DB
 mysql = MySQL()
@@ -53,6 +54,10 @@ def storage():
     _nombre = request.form['nombre'] #Recibimos los datos del formulario
     _correo = request.form['correo']
     _foto = request.files['foto']
+    
+    if _nombre == '' or _correo =='' or _foto == '':
+        flash('Debes completar los campos')
+        return redirect(url_for('create'))
     
     now = datetime.now() # Obtenemos la fecha actual
     tiempo = now.strftime("%Y%H%M%S") # Fijamos la variable tiempo para marcar el a;o, hora, minutos y segundos actuales para nombrar la foto.
