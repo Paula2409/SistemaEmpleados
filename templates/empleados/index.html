@@ -1,5 +1,9 @@
 {% include 'header.html' %}
-    <table class="table table-light">
+  <br>
+  <a href="{{url_for('create')}}" class="btn btn-success">Ingresar nuevo empleado</a>
+  <br>  
+  <br>
+  <table class="table table-light">
       <thead class="thead-light">
         <tr>
           <th>#</th>
@@ -16,7 +20,7 @@
             <td><img class="img-thumbnail" width="100" src="uploads/{{empleado.foto}}" alt="Foto de empleado"></td>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.correo}}</td>
-            <td><a href="/edit/{{empleado.id}}">Editar </a><a href="/destroy/{{empleado.id}}">Borrar</a></td>
+            <td><a href="/edit/{{empleado.id}}" class="btn btn-warning">Editar</a><a href="/destroy/{{empleado.id}}" class="btn btn-danger" style="margin-left: 20px" onclick="return confirm('Esta seguro que desea borrar al empleado?')"> Borrar</a></td>
           </tr>
           {% endfor %}
         </tbody>

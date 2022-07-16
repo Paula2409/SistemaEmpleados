@@ -1,21 +1,38 @@
 <!-- Para mostrar y editar la informacion del empleado -->
 {% include 'header.html' %}
         Formulario para editar: 
-
-
-        {% for empleado in empleados %}
-            <form action="/update" method="post" enctype="multipart/form-data">
-
-            ID: <input type="text" value="{{empleado.id}}" name="id" id="id"><br><br>
-
-            Nombre: <input type="text" value="{{empleado.nombre}}"  name="nombre" id="idnombre"><br><br>
-    
-            Correo: <input type="text" value="{{empleado.correo}}" name="correo" id="idcorreo"><br><br>
-        
-            Foto: <br> <img width="100" class="img-thumbnail" src="{{url_for('uploads', foto_empleado=empleado.foto)}}" alt="Foto empleado para editar"> <br><input type="file" name="foto" id="idfoto"><br><br>
-        
-            <input type="submit" value="Agregar">
-            </form>  
-        {% endfor %}    
+        <div class="card">
+            <div class="card-header">
+                Editar empleado
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Datos del empleado</h5>
+                <p class="card-text">
+                {% for empleado in empleados %}
+                <form action="/update" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input id="id" value="{{empleado.id}}" class="form-control" type="hidden" name="id">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input id="idnombre" value="{{empleado.nombre}}" class="form-control" type="text" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input id="idcorreo" value="{{empleado.correo}}" class="form-control" type="text" name="correo">
+                </div>
+                <div class="form-group">
+                    <label for="foto">Foto:</label>
+                    <img width="100" class="img-thumbnail" src="{{url_for('uploads', foto_empleado=empleado.foto)}}" alt="Foto empleado para editar">
+                    <input id="idfoto" class="form-control" type="file" name="foto">
+                </div>
+                </p>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-warning" value="Aceptar">
+                <a href="{{url_for('index')}}" class="btn btn-primary">Cancelar</a>
+            </div> 
+                </form>  
+                {% endfor %}    
 
 {% include 'footer.html' %}

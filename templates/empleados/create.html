@@ -2,14 +2,33 @@
 <!-- Para crear un nuevo registro del empleado -->
  <!-- enctype: nos permite subir formatos de texto y archivos.-->
   <!-- action: le indica al formulario que la informacio que ingrese el usuario la envie a dicha url -->
-<form action="/store" method="post" enctype="multipart/form-data">
+<form action="/store" method="post" enctype="multipart/form-data" <div class="card" style="margin-top: 20px">
+  <div class="card-header" >
+    Ingresar empleado
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Datos del empleado</h5>
+    <p class="card-text"> 
+    <div class="form-group">
+      <label for="nombre">Nombre: </label>
+      <input type="text" name="nombre" id="idnombre" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="correo">Correo: </label>
+      <input type="text" name="correo" id="idcorreo" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="foto">Foto: </label>
+      <input type="file" name="foto" id="idfoto" class="form-control">
+    </div>
+    <div class="form-group">
+      <input type="submit" class="btn btn-warning" value="Agregar">
+      <a href="{{url_for('index')}}" class="btn btn-primary">Regresar</a>
+    </div>      
+    </p>
+  </div>
+</div> >
     
-    Nombre: <input type="text" name="nombre" id="idnombre"><br><br>
 
-    Correo: <input type="text" name="correo" id="idcorreo"><br><br>
-    
-    Foto: <input type="file" name="foto" id="idfoto"><br><br>
-    
-    <input type="submit" value="Agregar">
 </form>
 {% include 'footer.html' %}
