@@ -1,10 +1,3 @@
-# Importamos modulos para el proyecto
-# Resquest lo importamos por que toda la informacion que se va a procesar a traves del HTML va a ser un ENVIO de informacion. Este envio se maneja como 'request'(solicitud de informacion).
-# Redirect: nos permite redireccionar a la url desde donde vino
-# os: modulo del sistema operativo.
-# Send from directory: modulo para que podamos acceder a las carpetas de flask (fotos)
-# url_for: se necesita para acceder a un metodo que tenemos en la aplcacion.py. En este caso el metodo uploads.
-
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flaskext.mysql import MySQL
 from datetime import datetime
